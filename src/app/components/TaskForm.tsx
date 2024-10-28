@@ -88,10 +88,10 @@ export default function TaskForm() {
             <option value="weekly">Weekly</option>
             <option value="monthly">Monthly</option>
             <option value="yearly">Yearly</option>
-            <option value="yearly">15Days</option>
-            <option value="yearly">5Days</option>
-            <option value="yearly">10Days</option>
-            <option value="yearly">20Days</option>
+            <option value="15 Days">15Days</option>
+            <option value="5 Days">5Days</option>
+            <option value="10 Days">10Days</option>
+            <option value="20 Days">20Days</option>
           </select>
           <input
             type="date"
