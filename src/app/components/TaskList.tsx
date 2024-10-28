@@ -26,24 +26,28 @@ export default function TaskList() {
     <div className="bg-white md:w-[28%] rounded-lg px-5 py-3 mx-9 md:mx-0 font-serif">
       <h2 className="text-center text-xl font-bold underline">To-Do List</h2>
       <ul>
-        {tasks?.map((task, index) => (
-          <li
-            key={task.id}
-            className="flex items-center justify-between border-b"
-          >
-            {index + 1}. {task.title} - {task.recurrence}
-            <div className="flex flex-row gap-4">
-              <DeleteIcon
-                className="text-red-600"
-                onClick={() => deleteFunction(task.id)}
-              />
-              <EditIcon
-                className="text-green-500"
-                onClick={() => handleUpdate(task)}
-              />
-            </div>
-          </li>
-        ))}
+        {Array.isArray(tasks) && tasks.length > 0 ? (
+          tasks.map((task, index) => (
+            <li
+              key={task.id}
+              className="flex items-center justify-between border-b"
+            >
+              {index + 1}. {task.title} - {task.recurrence}
+              <div className="flex flex-row gap-4">
+                <DeleteIcon
+                  className="text-red-600"
+                  onClick={() => deleteFunction(task.id)}
+                />
+                <EditIcon
+                  className="text-green-500"
+                  onClick={() => handleUpdate(task)}
+                />
+              </div>
+            </li>
+          ))
+        ) : (
+          <p className="text-center">No Tasks Available</p>
+        )}
       </ul>
     </div>
   );
