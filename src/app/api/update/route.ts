@@ -6,11 +6,11 @@ export const PUT = async (req: Request, res: Response) => {
   const searchParams = new URLSearchParams(url.searchParams);
   const id = searchParams.get("id");
 
-  const { title, recurrence, startDate, endDate }: Task = await req.json();
+  const { title, recurrence, startdate, enddate }: Task = await req.json();
   try {
     const result = await pool.query(
       "UPDATE task SET title=$1, recurrence=$2, startDate=$3,endDate=$4 WHERE id=$5 RETURNING *",
-      [title, recurrence, startDate, endDate, id]
+      [title, recurrence, startdate, enddate, id]
     );
     return Response.json(result.rows[0]);
   } catch (error) {

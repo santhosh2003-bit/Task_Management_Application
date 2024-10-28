@@ -8,7 +8,7 @@ interface TaskStore {
   state: boolean;
   setState(state: boolean): void;
   edit: Task | null;
-  setEdit: (task: Task) => void;
+  setEdit: (task: Task | null) => void;
 }
 
 const useTaskStore = create<TaskStore>((set) => ({

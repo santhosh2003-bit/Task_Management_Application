@@ -14,7 +14,10 @@ export default function TaskList() {
   };
   useEffect(() => {
     const fetchTasks = async () => {
-      const response = await fetch("/api/task");
+      const response = await fetch("/api/task", {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
       const data: Task[] = await response.json();
       setTasks(data);
       // console.log(data);

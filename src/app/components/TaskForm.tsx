@@ -10,18 +10,34 @@ export default function TaskForm() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const { tasks, setTasks, edit, state, setEdit } = useTaskStore();
+  const formatDateForInput = (dateString: string) => {
+    // console.log("Original Date String:", dateString); // Debug log
+    const date = new Date(dateString);
 
+    // Check if date is valid
+    if (isNaN(date.getTime())) {
+      console.error("Invalid date string:", dateString);
+      return ""; // Return empty string or handle error appropriately
+    }
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!startDate || !endDate) {
+      alert("Start and end dates are required");
+      return;
+    }
     if (edit) {
-      const response = await fetch(
-        `http://localhost:3000/api/update?id=${edit.id}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ title, recurrence, startDate, endDate }),
-        }
-      );
+      // console.log(edit);
+      const response = await fetch(`/api/update?id=${edit.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title, recurrence, startDate, endDate }),
+      });
       if (!response.ok) {
         alert("Failed to update task");
         return;
@@ -29,13 +45,18 @@ export default function TaskForm() {
 
       const updatedTask: Task = await response.json();
       alert("Task updated");
-      console.log(updatedTask);
+      // console.log(updatedTask);
       // Update the tasks list with the modified task
       setTasks(
         tasks.map((task) => (task.id === updatedTask.id ? updatedTask : task))
       );
+      setEdit(null);
+      setTitle("");
+      setRecurrence("daily");
+      setStartDate("");
+      setEndDate("");
     } else {
-      const response = await fetch("http://localhost:3000/api/task", {
+      const response = await fetch("/api/task", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title, recurrence, startDate, endDate }),
@@ -57,10 +78,10 @@ export default function TaskForm() {
   };
   useEffect(() => {
     if (edit) {
-      setTitle(edit?.title ?? "");
-      setRecurrence(edit?.recurrence ?? "daily");
-      setStartDate(edit?.startDate ?? "");
-      setEndDate(edit?.endDate ?? "");
+      setTitle(edit.title);
+      setRecurrence(edit.recurrence);
+      setStartDate(formatDateForInput(edit.startdate)); // Format the start date
+      setEndDate(formatDateForInput(edit.enddate)); // Format the end date
     }
   }, [edit]);
 

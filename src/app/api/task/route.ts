@@ -12,11 +12,11 @@ export const GET = async (req: Request, res: Response) => {
   }
 };
 export const POST = async (req: Request, res: Response) => {
-  const { title, recurrence, startDate, endDate }: Task = await req.json();
+  const { title, recurrence, startdate, enddate }: Task = await req.json();
   try {
     const result = await pool.query(
       "INSERT INTO task (title, recurrence,startDate,endDate) VALUES ($1, $2,$3,$4) RETURNING *",
-      [title, recurrence, startDate, endDate]
+      [title, recurrence, startdate, enddate]
     );
     return Response.json(result.rows[0]);
   } catch (error) {
